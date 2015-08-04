@@ -1,0 +1,136 @@
+#include<stdio.h> 
+#include <stdlib.h>
+
+int* mergesort(int a[], int lim, int odd, double *count)
+{
+	
+	int i,l,t,k,j;
+	int *b;
+	int *c;
+	int *d;
+	int *e;
+	int *merged;
+	merged=(int *)malloc(lim*sizeof(int));
+	
+	if(lim==1 )
+	{
+		merged[0]=a[0];
+		//printf("We stop because the limit is : %d \n\n",lim);
+		//printf("and we have seen : %d  \n\n",merged[0]);
+	}
+	else if(lim==2)
+	{
+		if(a[0]>a[1])
+		{
+			merged[0]=a[1];
+			merged[1]=a[0];
+			*count=*count+1;
+			//printf("We stop because the limit is : %d \n\n",lim);
+			//printf("and we have sorted : %d %d \n\n",merged[0],merged[1]);
+		}
+		else
+		{
+			merged[0]=a[0];
+			merged[1]=a[1];
+			//printf("We stop because the limit is : %d \n\n",lim);
+			//printf("and we have sorted : %d %d \n\n",merged[0],merged[1]);
+		}
+		
+	}
+	else{
+
+	//printf("In mergesort Length is: %d \n\n",lim);
+	if(odd==0)
+	{
+		t=lim/2+1;
+	}
+	else
+	{
+		t=lim/2;
+	}
+	b=(int *)malloc(lim/2*sizeof(int));
+	c=(int *)malloc(t*sizeof(int));
+	d=(int *)malloc(lim/2*sizeof(int));
+	e=(int *)malloc(lim/2*sizeof(int));
+	merged=(int *)malloc(lim*sizeof(int));
+	l=lim/2;
+	i=0;
+	for(i = 0; i < l; i++)
+	{
+		b[i]=a[i];
+		//printf("For i = %d b has value %d \n \n",i,b[i]);
+	}
+	i=0;
+	for(i=0; i<t; i++)
+	{
+		c[i]=a[lim/2+i];
+		//printf("For i = %d c has value %d \n \n",i,c[i]);
+	}
+	//printf("In mergesort Length is: %d \n\n",lim);
+	if(l % 2==1)
+	{
+		odd=0;
+	}
+	else
+	{
+		odd=1;
+	}
+	d=mergesort(b, l, odd,count);
+	
+	//printf("this is d when lim is: %d \n\n",lim );
+	//for(i = 0; i < l; i++)
+	//printf("%d \n\n", d[i]);
+	if(t % 2==1)
+	{
+		odd=0;
+	}
+	else
+	{
+		odd=1;
+	}
+	e=mergesort(c, t, odd,count);
+	
+	//printf("this is e when lim is: %d \n\n",lim );
+	//for(i = 0; i < t; i++)
+	//printf("%d \n\n", e[i]);
+	//odd is 0 if lim is off and 1 if int is even
+	i=0;
+	j=0;
+	for(k=0;k<lim;k++)
+	{
+		if(i>l-1)
+		{
+			merged[k]=e[j];
+			j++;
+			*count=*count+l-i;
+			printf("count: %lf \n",*count);
+			//printf("1)We get merged(%d)=e(%d)=%d ----->>> j=%d and i=%d and k=%d \n\n", k,j,merged[k],j,i,k);
+		}
+		else if (j>t-1)
+		{
+			merged[k]=d[i];
+			i++;
+			
+			//printf("2)We get merged(%d)=d(%d)=%d ----->>> j=%d and i=%d and k=%d \n\n", k,i,merged[k],j,i,k);
+		}
+		else if(d[i] <e[j])
+		{
+			merged[k]=d[i];
+			i++;
+			
+			//printf("We get merged(%d)=d(%d)=%d ----->>> j=%d and i=%d and k=%d \n\n", k,i,merged[k],j,i,k);
+		}
+		else
+		{
+			merged[k]=e[j];
+			j++;
+			*count=*count+l-i;
+			printf("count: %lf \n",*count);
+			//printf("We get merged(%d)=e(%d)=%d and we add %d to count ----->>> j=%d and i=%d and k=%d \n\n", k,j,merged[k],l-i,j,i,k);
+		}
+	}
+
+	}
+	
+return(merged);
+}
